@@ -1,6 +1,7 @@
 
 'use client';
 
+import StoryComponent from '@/app/components/generated/story-component';
 import { useState, useEffect } from 'react';
 
 export default function UIExample(params: { story?: string }) {
@@ -16,7 +17,15 @@ export default function UIExample(params: { story?: string }) {
         const fetchComponentCode = async () => {
             try {
                 setIsLoading(true);
-                const response = await fetch('/api/generate_component');
+                const response = await fetch('/api/generate_component',
+                    {
+                        method: 'POST',
+                        body: JSON.stringify({ story }),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
                 if (!response.ok) {
                     throw new Error('Failed to fetch component code');
                 }
@@ -38,6 +47,8 @@ export default function UIExample(params: { story?: string }) {
     return <div>
         <div className="text-xl font-semibold">{story}</div>
 
+
+        <StoryComponent />
 
         {componentCode}
 

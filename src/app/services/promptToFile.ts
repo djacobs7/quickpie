@@ -82,7 +82,7 @@ export const callOpenAIAndSaveToFile = async (prompt: string, filePath: string) 
         .replace(/\\'/g, "'"); // Convert escaped single quotes
 
       // Step 2: Write the extracted code to a file
-      // writeResponseToFile(filePath, extractedCode);
+      writeResponseToFile(filePath, extractedCode);
 
       console.log("3")
       return extractedCode
@@ -99,14 +99,20 @@ export const callOpenAIAndSaveToFile = async (prompt: string, filePath: string) 
 //   return trimmed;
 // }
 
-// Define a more complex prompt for generating the component
-const promptParamList = [
-  "You are an assistant that responds with structured JSON format. For the following task, please return the output in a JSON object.",
-  "Task: Write a react component that can call the OpenAPI endpoint, and render the following story.  Use tailwindcss.  Make sure to actually call the API. Return only the component code.  If it is a client side component, make sure to start the code with use client.   Use fetch instead of axios.",
-  'expected reponse structure: {"file": <jsx>, "explanation" : ["any other text not part of the code here"]}',
-];
 
-export const component_generation_prompt = promptParamList.join(" ");
+
+export const component_generation_prompt = (story: string) => {
+  // Define a more complex prompt for generating the component
+  const promptParamList = [
+    "You are an assistant that responds with structured JSON format. For the following task, please return the output in a JSON object.",
+    "Task: Write a react component that can call the OpenAPI endpoint, and render the following story.  Use tailwindcss.  Make sure to actually call the API. Return only the component code.  If it is a client side component, make sure to start the code with use client.   Use fetch instead of axios.",
+    'expected reponse structure: {"file": <jsx>, "explanation" : ["any other text not part of the code here"]}',
+    "STORY: " + story
+  ];
+
+  return promptParamList.join(" ");
+
+}
 // console.log("Generated prompt:", prompt);
 
 // const filePath = "./test.tsx"; // Saving to your project SRC
